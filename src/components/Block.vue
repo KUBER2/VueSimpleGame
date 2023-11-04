@@ -1,21 +1,51 @@
 <template>
   <div class="card">
     <h1>Game block</h1>
-    <button @click="clickHandler">Start the game!</button>
+    <button @click="clickHandler" :disabled="isButtonDisabled">
+      {{ buttonDescription }}
+    </button>
   </div>
+  <SquareBox v-if="showBox" @boxClick="boxClick"></SquareBox>
 </template>
 
 <script>
+import SquareBox from "./Square.vue";
 export default {
   setup() {},
   name: "GameBlock",
+  components: {
+    SquareBox,
+  },
   methods: {
-    clickHandler() {},
+    clickHandler() {
+      console.log("Button has been clicked");
+      this.isButtonDisabled = true;
+      this.buttonDescription = "Wait for square";
+      setTimeout(() => {
+        this.showBox = true;
+        this.timer = Date.now();
+      }, getRandomInt(1 * 100, 3 * 1000));
+    },
     boxClick() {
-      this.$emit("timer", 0.00932);
+      this.isButtonDisabled = false;
+      this.showBox = false;
+      this.$emit("timer", (Date.now() - this.timer) / 1000);
     },
   },
+  data() {
+    return {
+      showBox: false,
+      isButtonDisabled: false,
+      timer: 0,
+      buttonDescription: "Click to start!",
+    };
+  },
 };
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
 </script>
 
 <style scoped>

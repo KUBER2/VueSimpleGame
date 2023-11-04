@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h4>Your result</h4>
-    <p>{{ result }}</p>
+    <p>{{ result }} seconds</p>
   </div>
 </template>
 
